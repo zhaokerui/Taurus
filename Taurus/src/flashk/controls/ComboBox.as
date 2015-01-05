@@ -46,7 +46,10 @@ package flashk.controls
 		public var listContainer:DisplayObjectContainer;
 		
 		
-		
+		/**
+		 * 点击选择
+		 */
+		public var hideListOnClick:Boolean = true;
 		
 		private var _maxLine:int = 6;
 		
@@ -100,11 +103,13 @@ package flashk.controls
 			var listField:String = fields.listField;
 			var openButtonField:String = fields.openButtonField;
 			
-			openButton = new Button(content[openButtonField]);
+			openButton = new Button(content[openButtonField],true,true);
 			
 			list = new List(content[listField],true,UIConst.VERTICAL);
 			list.width = int(this.width);
 			list.height = int(list.rowHeight * maxLine);
+			if (list.parent)
+				list.parent.removeChild(list);
 		}
 		/** @inheritDoc*/
 		protected override function mouseDownHandler(event:MouseEvent) : void
@@ -116,7 +121,8 @@ package flashk.controls
 				hideList();
 				return;
 			}
-			
+			if(listData==null)
+				return;
 			var listPos:Point = Geom.localToContent(new Point(),this,listContainer)
 			list.data = listData;
 			list.addEventListener(Event.CHANGE,listChangeHandler);
@@ -156,8 +162,8 @@ package flashk.controls
 		private function listChangeHandler(event:Event):void
 		{
 			this.data = list.selectedData;
-			
-			//			hideList();
+			if(hideListOnClick)
+				hideList();
 		}
 		
 		private function hideList():void

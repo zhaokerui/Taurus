@@ -111,6 +111,7 @@
     <classEntry path="flashk.events.TimeLineEvent"/>
     <classEntry path="flashk.core.TimeLine"/>
     <classEntry path="flashk.movieclip.BitmapMovieClip"/>
+    <classEntry path="flashk.controls.Tab"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

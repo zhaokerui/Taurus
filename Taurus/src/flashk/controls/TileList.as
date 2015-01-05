@@ -38,7 +38,7 @@ package flashk.controls
 	public class TileList extends Tile
 	{
 		public static var defaultSkin:ClassFactory =  new ClassFactory(ListBackground);
-		public static var defaultItemRender:ClassFactory = new ClassFactory(Button,{autoSize:"left"},[null,true,true]);
+		public static var defaultItemRender:ClassFactory = new ClassFactory(Button,{autoSize:"left",autoRefreshLabelField:true},[null,true,true]);
 		
 		/**
 		 * 类型 

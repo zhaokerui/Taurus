@@ -12,9 +12,10 @@ package flashk.controls
 	import flashk.layout.LinearLayout;
 	import flashk.utils.ClassFactory;
 	
+	[Event(name="change",type="flash.events.CHANGE")]
 	[Event(name="item_click",type="flashk.events.ItemClickEvent")]
 	/**
-	 * 根据data复制对象排列的容器
+	 * 根据data复制对象排列的容器，或者不同对象排列的容器
 	 * 
 	 * 标签规则：这个对象并没有背景，skin将作为ItemRender的skin存在
 	 * 
@@ -42,6 +43,7 @@ package flashk.controls
 			
 			setContent(new Sprite());//重新设置Content，避免冲突
 			setLayout(new LinearLayout());
+			this.type = type;
 			
 			if (skin is DisplayObject)
 				skin = skin["constructor"];
@@ -229,12 +231,21 @@ package flashk.controls
 			while (o && o.parent != contentPane)
 				o = o.parent;
 			
-			if (ref.isClass(o))
+			var e:ItemClickEvent;
+			if(ref&&ref.isClass(o))
 			{
-				var e:ItemClickEvent = new ItemClickEvent(ItemClickEvent.ITEM_CLICK);
+				e = new ItemClickEvent(ItemClickEvent.ITEM_CLICK);
 				e.data = (o as UIBase).data;
 				e.relatedObject = o as InteractiveObject;
 				dispatchEvent(e);
+			}else{
+				if(o is UIBase)
+				{
+					e = new ItemClickEvent(ItemClickEvent.ITEM_CLICK);
+					e.data = (o as UIBase).data;
+					e.relatedObject = o as InteractiveObject;
+					dispatchEvent(e);
+				}
 			}
 		}
 		
@@ -311,7 +322,9 @@ package flashk.controls
 			{
 				var item:UIBase = contentPane.getChildAt(i) as UIBase;
 				if (item)
+				{
 					item.selected = v && item.data == v; 
+				}
 			}
 			
 			dispatchEvent(new Event(Event.CHANGE));

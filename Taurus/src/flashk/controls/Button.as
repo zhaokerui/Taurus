@@ -1,6 +1,7 @@
 package flashk.controls
 {
 	import flash.display.MovieClip;
+	import flash.display.SimpleButton;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
@@ -56,6 +57,8 @@ package flashk.controls
 		
 		private var mouseDownTimer:Timer;
 		private var mouseDownDelayTimer:int;
+		private var allState:Array=null;
+		private var btnSimple:SimpleButton;
 		
 		/**
 		 * 执行的指令名称
@@ -113,15 +116,18 @@ package flashk.controls
 			_mouseOver = v;
 		}
 		
-		public function Button(skin:*=null, replace:Boolean=true,separateTextField:Boolean = false, textPadding:Padding=null, autoRefreshLabelField:Boolean = true)
+		public function Button(skin:*=null, replace:Boolean=true,autoRefreshLabelField:Boolean = false,separateTextField:Boolean = false, textPadding:Padding=null)
 		{
 			this._autoRefreshLabelField = autoRefreshLabelField;
 			if (!skin)
 				skin = Button.defaultSkin;
 			super(skin, replace);
 			
-			if(content is MovieClip)
+			if (content is SimpleButton)
 			{
+				btnSimple = content as SimpleButton;
+				allState = [btnSimple.upState,btnSimple.overState,btnSimple.downState];
+			}else{
 				this.mouseChildren = false;
 			}
 			this.separateTextField = separateTextField;
@@ -199,6 +205,27 @@ package flashk.controls
 		{
 			if (!enabled)
 				n = DISABLED;
+			if(btnSimple)
+			{
+				if(selected)
+				{
+					btnSimple.upState = allState[2];
+					btnSimple.overState = allState[2];
+					btnSimple.downState = allState[2];
+				}else{
+					if(n==0)
+					{
+						btnSimple.upState = allState[0];
+					}else if(n==1)
+					{
+						btnSimple.overState = allState[1];
+					}else if(n==2)
+					{
+						btnSimple.downState = allState[2];
+					}
+				}
+				return;
+			}
 			if (content is MovieClip)
 			{
 				var mc:MovieClip = content as MovieClip;
@@ -207,15 +234,20 @@ package flashk.controls
 					mc.gotoAndStop(1);
 				}else if(mc.totalFrames==2)
 				{
-					if(n==0||n==1)
+					if(selected)
 					{
-						mc.gotoAndStop(1);
-					}else{
 						mc.gotoAndStop(2);
+					}else{
+						if(n==0||n==1)
+						{
+							mc.gotoAndStop(1);
+						}else{
+							mc.gotoAndStop(2);
+						}
 					}
 				}else if(mc.totalFrames==3)
 				{
-					if(n==3)
+					if(selected)
 					{
 						mc.gotoAndStop(3);
 					}else{
@@ -223,25 +255,19 @@ package flashk.controls
 					}
 				}else if(mc.totalFrames==4)
 				{
-					mc.gotoAndStop(n+1);
-				}else if(mc.totalFrames==6)
-				{
-					mc.gotoAndStop(n+1);
 					if(selected)
 					{
-						if(n==3)
-						{
-							mc.gotoAndStop(6);
-						}else{
-							mc.gotoAndStop(n+4);
-						}
+						mc.gotoAndStop(3);
 					}else{
-						if(n==3)
-						{
-							mc.gotoAndStop(3);
-						}else{
-							mc.gotoAndStop(n+1);
-						}
+						mc.gotoAndStop(n+1);
+					}
+				}else if(mc.totalFrames==6)
+				{
+					if(selected)
+					{
+						mc.gotoAndStop(n+4);
+					}else{
+						mc.gotoAndStop(n+1);
 					}
 				}else{
 					var next:String = LABELS[n][int(selected)];
@@ -381,9 +407,9 @@ package flashk.controls
 		public var labelField:String;
 		
 		/**
-		 * 是否创建Label文本框（此属性已取消，必须用GButtonBase构造函数的第5个参数来设置）
+		 * 是否创建Label文本框
 		 */
-		private var _autoRefreshLabelField:Boolean = true;
+		private var _autoRefreshLabelField:Boolean = false;
 		public function get autoRefreshLabelField():Boolean
 		{
 			return _autoRefreshLabelField;
@@ -391,7 +417,7 @@ package flashk.controls
 		
 		public function set autoRefreshLabelField(v:Boolean):void
 		{
-			throw new Error("GButtonBase的autoRefreshLabelField属性已失效，必须用构造函数的第5个参数来设置");
+			_autoRefreshLabelField = true;
 		}
 		
 		/**

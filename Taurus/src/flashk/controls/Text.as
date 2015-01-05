@@ -26,7 +26,8 @@ package flashk.controls
 	import flashk.utils.TextFieldUtil;
 	import flashk.utils.TextUtil;
 	import flashk.utils.UBB;
-
+	
+	[Event(name="change",type="flash.events.Event")]
 	/**
 	 * @author kerry
 	 * @version 1.0.0 
