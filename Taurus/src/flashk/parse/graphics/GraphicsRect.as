@@ -9,7 +9,7 @@ package flashk.parse.graphics
 	/**
 	 * 绘制方框。这个类合并了原角和直角方框，以及一个指向箭头。
 	 * 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public class GraphicsRect extends DisplayParse

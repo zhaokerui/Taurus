@@ -4,11 +4,11 @@
 		|							 |                                            |               |            |
 		Button						 NoScale                                     Tile             PercentBar  Text
 		|					  |	        |          |               |              |               |
-CheckBox ComboBox RadioButton Silder  Image      Panel        ScrollPanel       TileList        ProgressBar
+CheckBox ComboBox RadioButton Silder  Image      Panel   Tab  ScrollPanel       TileList        ProgressBar
                               |                    |               |              |
 			HSilder  VSilder  ScrollBar   Alert  Window Repeater  List        TileListGroup
-			                     |                         |
-						HScrollBar VScrollBar          ButtonBar
+			                     |                       |  
+						HScrollBar VScrollBar         ButtonBar  
 									 
 									 
 									 

@@ -5,15 +5,12 @@ package flashk.controls
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
-	import flash.geom.Point;
-	import flash.text.TextFieldAutoSize;
 	import flash.utils.Timer;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
 	import flashk.display.UIBase;
 	import flashk.events.ActionEvent;
-	import flashk.layout.Padding;
 	
 	import taurus.skin.ButtonSkin;
 	
@@ -115,23 +112,31 @@ package flashk.controls
 		{
 			_mouseOver = v;
 		}
+		/**
+		 * Label文本实例 
+		 */
+		public var labelTextField:Text;
+		/**
+		 * data中显示成label的字段
+		 */
+		public var labelField:String;
+		private var _autoRefreshLabelField:Boolean = false;
 		
-		public function Button(skin:*=null, replace:Boolean=true,autoRefreshLabelField:Boolean = false,separateTextField:Boolean = false, textPadding:Padding=null)
+		public function Button(skin:*=null, replace:Boolean=true, autoRefreshLabelField:Boolean=false)
 		{
-			this._autoRefreshLabelField = autoRefreshLabelField;
 			if (!skin)
 				skin = Button.defaultSkin;
+			this._autoRefreshLabelField = autoRefreshLabelField;
+			
 			super(skin, replace);
 			
 			if (content is SimpleButton)
 			{
 				btnSimple = content as SimpleButton;
 				allState = [btnSimple.upState,btnSimple.overState,btnSimple.downState];
-			}else{
-				this.mouseChildren = false;
 			}
-			this.separateTextField = separateTextField;
-			this.textPadding = textPadding;
+			this.mouseChildren = false;
+			this.buttonMode=true;
 		}
 		public override function set enabled(v:Boolean) : void
 		{
@@ -155,7 +160,6 @@ package flashk.controls
 		/** @inheritDoc*/
 		public override function setContent(skin:*, replace:Boolean=true):void
 		{
-			defaultSkin = skin;
 			super.setContent(skin,replace);
 			if (_autoRefreshLabelField)
 				refreshLabelField();
@@ -394,102 +398,35 @@ package flashk.controls
 		{
 			dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 		}
-		
-		//带Label按钮
 		/**
-		 * Label文本实例 
-		 */
-		public var labelTextField:Text;
-		
-		/**
-		 * data中显示成label的字段
-		 */
-		public var labelField:String;
-		
-		/**
-		 * 是否创建Label文本框
-		 */
-		private var _autoRefreshLabelField:Boolean = false;
-		public function get autoRefreshLabelField():Boolean
-		{
-			return _autoRefreshLabelField;
-		}
-		
-		public function set autoRefreshLabelField(v:Boolean):void
-		{
-			_autoRefreshLabelField = true;
-		}
-		
-		/**
-		 * 根据文本框更新图形大小
+		 * 更新label
 		 * 
 		 */
-		public function adjustContextSize():void
-		{
-			if (labelTextField)
-				labelTextField.adjustContextSize();
-		}
-		
-		/**
-		 * 删除Label文本框 
-		 * 
-		 */
-		public function removeLabelTextField():void
+		public function refreshLabelField():void
 		{
 			if (labelTextField)
 			{
+				//复制原属性
+				var newText:Text = new Text(content,false,labelTextField.separateTextField,labelTextField.textPadding);
+				newText.enabledAdjustContextSize = labelTextField.enabledAdjustContextSize;
+				newText.enabledTruncateToFit = labelTextField.enabledTruncateToFit;
+				newText.enabledVerticalCenter = labelTextField.enabledVerticalCenter;
+				newText.autoSize = autoSize;
+				
 				labelTextField.destory();
-				labelTextField = null;
+				labelTextField = newText;
 			}
+			else
+			{
+				labelTextField = new Text(content,false);
+			}
+			
+			if (!labelTextField.parent)
+				addChild(labelTextField)
+			
+			if (label != null)
+				labelTextField.text = label;
 		}
-		
-		/**
-		 * 是否自动根据文本调整Skin体积。当separateTextField为false时，此属性无效。
-		 * 要正确适应文本，首先必须在创建时将separateTextField参数设为true，其次可以根据textPadding来决定边距
-		 */
-		public function get enabledAdjustContextSize():Boolean
-		{
-			return labelTextField ? labelTextField.enabledAdjustContextSize : false;
-		}
-		
-		public function set enabledAdjustContextSize(value:Boolean):void
-		{
-			if (labelTextField)
-				labelTextField.enabledAdjustContextSize = value;
-		}
-		
-		
-		/**
-		 * 动态创建的TextField的初始位置（如果是从skin中创建，此属性无效）
-		 */
-		public function get textStartPoint():Point
-		{
-			return labelTextField ? labelTextField.textStartPoint : null;
-		}
-		
-		public function set textStartPoint(value:Point):void
-		{
-			if (labelTextField)
-				labelTextField.textStartPoint = value;
-		}
-		
-		
-		/**
-		 * 文本自适应边距 
-		 * @return 
-		 * 
-		 */
-		public function get textPadding():Padding
-		{
-			return labelTextField ? labelTextField.textPadding : null;
-		}
-		
-		public function set textPadding(value:Padding):void
-		{
-			if (labelTextField)
-				labelTextField.textPadding = value;
-		}
-		
 		/**
 		 * Label自动大小
 		 */
@@ -497,67 +434,11 @@ package flashk.controls
 		{
 			return labelTextField ? labelTextField.autoSize : null;
 		}
-		
 		public function set autoSize(value:String):void
 		{
 			if (labelTextField)
-				labelTextField.autoSize = value;
+				labelTextField.autoSize = value;			
 		}
-		
-		/**
-		 * 是否将文本从Skin中剥离。剥离后Skin缩放才不会影响到文本的正常显示
-		 */
-		public function get separateTextField():Boolean
-		{
-			return labelTextField ? labelTextField.separateTextField : false;
-		}
-		
-		public function set separateTextField(v:Boolean):void
-		{
-			if (labelTextField)
-				labelTextField.separateTextField = v;
-		}
-		
-		/**
-		 * 自动截取文本 
-		 * @return 
-		 * 
-		 */
-		public function get enabledTruncateToFit():Boolean
-		{
-			return labelTextField ? labelTextField.enabledTruncateToFit : false;
-		}
-		
-		public function set enabledTruncateToFit(v:Boolean):void
-		{
-			if (labelTextField)
-				labelTextField.enabledTruncateToFit = v;
-		}
-		
-		/**
-		 * 文本是否垂直居中
-		 */
-		public function get enabledVerticalCenter():Boolean
-		{
-			return labelTextField ? labelTextField.enabledVerticalCenter : false;
-		}
-		
-		public function set enabledVerticalCenter(v:Boolean):void
-		{
-			if (labelTextField)
-				labelTextField.enabledVerticalCenter = v;
-		}
-		
-		/**
-		 * 激活文本自适应
-		 * 
-		 */
-		public function enabledAutoLayout(padding:Padding,autoSize:String = TextFieldAutoSize.LEFT):void
-		{
-			if (labelTextField)
-				labelTextField.enabledAutoLayout(padding,autoSize);
-		}
-		
 		/**
 		 * Label文字 
 		 * @return 
@@ -583,61 +464,22 @@ package flashk.controls
 		/** @inheritDoc*/
 		public override function set data(v:*) : void
 		{
-			super.data = v;
-			
+			super.data = v;			
 			if (label != null)
 			{
-				if (labelTextField && _autoRefreshLabelField)
+				if (labelTextField)
 					labelTextField.text = label;
 			}
 		} 
-		
-		/**
-		 * 更新label
-		 * 
-		 */
-		public function refreshLabelField():void
-		{
-			if (labelTextField)
-			{
-				//复制原属性
-				var newText:Text = new Text(content,false,separateTextField,textPadding);
-				newText.enabledAdjustContextSize = enabledAdjustContextSize;
-				newText.enabledTruncateToFit = enabledTruncateToFit;
-				newText.enabledVerticalCenter = enabledVerticalCenter;
-				newText.autoSize = autoSize;
-				
-				labelTextField.destory();
-				labelTextField = newText;
-			}
-			else
-			{
-				labelTextField = new Text(content,false);
-			}
-			
-			if (!labelTextField.parent)
-				addChild(labelTextField)
-			
-			if (label != null)
-				labelTextField.text = label;
-		}
-		
-		
-		
-		
 		/** @inheritDoc*/
 		public override function destory() : void
 		{
 			if (destoryed)
-				return;
-			
+				return;			
 			removeEvents();
-			
 			enabledIncessancy = false;
-			
 			if (labelTextField)
 				labelTextField.destory();
-			
 			super.destory();
 		}
 	}

@@ -203,7 +203,7 @@ package flashk.controls
 				this.upArrow.addEventListener(MouseEvent.CLICK,upArrowClickHandler);
 			}
 			else
-				this.upArrow = new Button(new Shape(),true,false,false,null)
+				this.upArrow = new Button(new Shape())
 			
 			if (content.hasOwnProperty(downArrowField))
 			{

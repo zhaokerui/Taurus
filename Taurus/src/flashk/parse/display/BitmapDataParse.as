@@ -10,7 +10,7 @@ package flashk.parse.display
 	/**
 	 * 在画布上绘制一个位图
 	 * 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public class BitmapDataParse extends DisplayParse

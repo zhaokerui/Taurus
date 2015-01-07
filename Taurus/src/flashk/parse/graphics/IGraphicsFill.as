@@ -4,7 +4,7 @@ package flashk.parse.graphics
 
 	/**
 	 * 填充接口
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public interface IGraphicsFill extends IParse

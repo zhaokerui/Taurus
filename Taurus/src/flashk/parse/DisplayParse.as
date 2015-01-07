@@ -8,8 +8,8 @@ package flashk.parse
 	import flash.display.Sprite;
 	
 	/**
-	 * 其实这东西就类似flash10的graphicData，将绘图操作对象化了。
-	 * 
+	 * 图形解析
+	 * 类似flash10的graphicData，将绘图操作对象化了。
 	 * @author kerry
 	 * 
 	 */
@@ -35,7 +35,7 @@ package flashk.parse
 		}
 		
 		/**
-		 * 更新Graphics
+		 * 解析图形
 		 * @param target
 		 * 
 		 */
@@ -45,7 +45,7 @@ package flashk.parse
 		}
 		
 		/**
-		 * 更新位图
+		 * 解析位图数据
 		 * @param target
 		 * 
 		 */
@@ -55,7 +55,7 @@ package flashk.parse
 		}
 		
 		/**
-		 * 更新容器属性
+		 * 解析容器
 		 * @param target
 		 * 
 		 */
@@ -65,7 +65,7 @@ package flashk.parse
 		}
 		
 		/**
-		 * 更新显示
+		 * 解析显示对象
 		 * @param target
 		 * 
 		 */
@@ -103,7 +103,7 @@ package flashk.parse
 		}
 		
 		/**
-		 * 创建组
+		 * 创建图形解析
 		 * 
 		 * @param para
 		 * @return 
@@ -117,7 +117,7 @@ package flashk.parse
 		}
 		
 		/**
-		 * 创建Sprite
+		 * 创建Sprite图形解析
 		 * 
 		 * @param para
 		 * @return 
@@ -131,7 +131,7 @@ package flashk.parse
 		}
 		
 		/**
-		 * 创建Shape
+		 * 创建Shape图形解析
 		 * 
 		 * @param para
 		 * @return 

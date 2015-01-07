@@ -77,12 +77,15 @@ package flashk.controls
 				this.x = offset;
 		}
 		private var backgroundWindow:DisplayObject;
+		public var fields:Object = {closeButton:"closeButton",dragBase:"dragBase",background:"background",titleTextField:"titleTextField"};
 		
-		public function Window(skin:*=null, replace:Boolean=true,autoSize:Boolean = true,windowSkin:* = null)
+		public function Window(skin:*=null, replace:Boolean=true,autoSize:Boolean = true,windowSkin:* = null,fields:Object = null)
 		{
 			autoWindowSize = autoSize;
 			if(!windowSkin)
 				windowSkin = defaultSkin;
+			if (fields)
+				this.fields = fields;
 			super(skin, replace);
 			setBackgroundSkin(windowSkin);
 			this.addEventListener(MouseEvent.MOUSE_DOWN,moveWindowTop);
@@ -123,10 +126,10 @@ package flashk.controls
 					backgroundWindow = skin as DisplayObject;
 					$addChildAt(backgroundWindow,0);
 					
-					closeButton = new Button(UIBuilder.getSkinByName(backgroundWindow,"closeButton"));
-					dragBase = new UIBase(UIBuilder.getSkinByName(backgroundWindow,"dragBase"));
-					background = new UIBase(UIBuilder.getSkinByName(backgroundWindow,"background"));
-					titleTextField = new Text(UIBuilder.getSkinByName(backgroundWindow,"titleTextField"));
+					closeButton = new Button(UIBuilder.getSkinByName(backgroundWindow,fields.closeButton));
+					dragBase = new UIBase(UIBuilder.getSkinByName(backgroundWindow,fields.dragBase));
+					background = new UIBase(UIBuilder.getSkinByName(backgroundWindow,fields.background));
+					titleTextField = new Text(UIBuilder.getSkinByName(backgroundWindow,fields.titleTextField));
 					titleTextField.mouseEnabled=false;
 					closeButton.action="close";
 					closeButton.addEventListener(ActionEvent.ACTION,closeButtonClickHandler);

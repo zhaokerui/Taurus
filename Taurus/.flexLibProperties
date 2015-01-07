@@ -51,7 +51,6 @@
     <classEntry path="flashk.controls.RadioButtonGroup"/>
     <classEntry path="flashk.utils.ObjectUtil"/>
     <classEntry path="flashk.controls.NoScale"/>
-    <classEntry path="flashk.utils.Geom"/>
     <classEntry path="flashk.controls.ScrollBar"/>
     <classEntry path="flashk.controls.ScrollPanel"/>
     <classEntry path="flashk.controls.TileListGroup"/>
@@ -69,7 +68,6 @@
     <classEntry path="flashk.layout.PaddingLayout"/>
     <classEntry path="flashk.utils.AbstractUtil"/>
     <classEntry path="flashk.events.DragEvent"/>
-    <classEntry path="flashk.utils.Handler"/>
     <classEntry path="flashk.utils.ReflectUtil"/>
     <classEntry path="flashk.utils.DataUtil"/>
     <classEntry path="flashk.core.UIBuilder"/>
@@ -83,7 +81,6 @@
     <classEntry path="flashk.controls.ScrollTextContent"/>
     <classEntry path="flashk.events.TweenEvent"/>
     <classEntry path="flashk.utils.TweenUtil"/>
-    <classEntry path="flashk.utils.ColorUtil"/>
     <classEntry path="flashk.utils.LinearUtil"/>
     <classEntry path="flashk.utils.CircUtil"/>
     <classEntry path="flashk.utils.FilterProxy"/>

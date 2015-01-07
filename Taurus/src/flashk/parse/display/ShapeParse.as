@@ -13,7 +13,7 @@ package flashk.parse.display
 	
 	/**
 	 * 图形
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public class ShapeParse extends DisplayParse

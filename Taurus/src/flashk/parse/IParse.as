@@ -3,7 +3,7 @@ package flashk.parse
 	public interface IParse
 	{
 		/**
-		 * 绘制
+		 * 解析
 		 * @param target
 		 * 
 		 */

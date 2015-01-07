@@ -8,7 +8,7 @@ package flashk.parse.display
 	/**
 	 * 9切片
 	 * 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public class Grid9Parse extends DisplayParse

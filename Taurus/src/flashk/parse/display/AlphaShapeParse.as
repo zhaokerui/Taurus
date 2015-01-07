@@ -16,7 +16,7 @@ package flashk.parse.display
 	/**
 	 * 创造一个覆盖于图形上的渐变透明遮罩，目前用于拖动时显示的临时图元上
 	 * 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public class AlphaShapeParse extends RectParse

@@ -8,7 +8,7 @@ package flashk.parse.display
 	
 	/**
 	 * 方框 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public class RectParse extends ShapeParse

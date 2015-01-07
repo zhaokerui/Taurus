@@ -4,7 +4,7 @@ package flashk.parse.graphics
 
 	/**
 	 * 线条接口
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public interface IGraphicsLineStyle extends IParse

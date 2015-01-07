@@ -10,7 +10,7 @@ package flashk.parse.display
 	
 	/**
 	 * 创建位图 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public class BitmapParse extends DisplayParse

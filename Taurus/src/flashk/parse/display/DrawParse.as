@@ -12,8 +12,8 @@ package flashk.parse.display
 	import flashk.utils.Debug;
 
 	/**
-	 * 绘制到位图
-	 * @author flashyiyi
+	 * 绘制位图
+	 * @author kerry
 	 * 
 	 */
 	public class DrawParse extends DisplayParse
