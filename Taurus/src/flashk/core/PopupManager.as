@@ -16,7 +16,7 @@ package flashk.core
 	/**
 	 * 弹出窗口管理类
 	 * 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */
 	public class PopupManager extends Singleton

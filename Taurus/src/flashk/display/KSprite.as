@@ -173,7 +173,7 @@ package flashk.display
 				return;
 			
 			if (skin is BitmapData)
-				skin = new Bitmap(skin as BitmapData)
+				skin = new Bitmap(skin as BitmapData);
 			
 			if (_content && _content.parent == this)
 			{

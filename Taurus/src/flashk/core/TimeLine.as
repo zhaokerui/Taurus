@@ -14,7 +14,7 @@ package flashk.core
 	/**
 	 * 这个类用于包装MovieClip的时间线，实现一些扩展功能。
 	 * 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */	
 	public class TimeLine extends EventDispatcher

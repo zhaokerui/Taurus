@@ -185,9 +185,9 @@ package flashk.controls
 					}
 				}
 				var w:Number=width;
-				if(w<content.height)
+				if(w<content.width)
 				{
-					w = content.height;
+					w = content.width;
 				}
 				var h:Number=height;
 				if(h<content.height)
@@ -207,14 +207,18 @@ package flashk.controls
 		}
 		private function closeButtonClickHandler(event:ActionEvent):void
 		{
-			if(this.parent!=null)
-			{
-				this.parent.removeChild(this);
-			}
+			close();
 			if(this.closeHandler==null)
 				dispatchEvent(new Event(Event.CLOSE));
 			else
 				this.closeHandler(event);
+		}
+		public function close():void
+		{
+			if(this.parent!=null)
+			{
+				this.parent.removeChild(this);
+			}
 		}
 		/**
 		 * 调整窗口位置，使其可以在舞台中被点中

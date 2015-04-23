@@ -11,6 +11,7 @@ package flashk.controls
 	
 	import flashk.display.UIBase;
 	import flashk.events.ActionEvent;
+	import flashk.layout.Padding;
 	
 	import taurus.skin.ButtonSkin;
 	
@@ -122,7 +123,7 @@ package flashk.controls
 		public var labelField:String;
 		private var _autoRefreshLabelField:Boolean = false;
 		
-		public function Button(skin:*=null, replace:Boolean=true, autoRefreshLabelField:Boolean=false)
+		public function Button(skin:*=null, replace:Boolean=true, autoRefreshLabelField:Boolean=false,separateTextField:Boolean = false, textPadding:Padding=null)
 		{
 			if (!skin)
 				skin = Button.defaultSkin;
@@ -130,6 +131,8 @@ package flashk.controls
 			
 			super(skin, replace);
 			
+			this.separateTextField = separateTextField;
+			this.textPadding = textPadding;
 			if (content is SimpleButton)
 			{
 				btnSimple = content as SimpleButton;
@@ -407,10 +410,10 @@ package flashk.controls
 			if (labelTextField)
 			{
 				//复制原属性
-				var newText:Text = new Text(content,false,labelTextField.separateTextField,labelTextField.textPadding);
-				newText.enabledAdjustContextSize = labelTextField.enabledAdjustContextSize;
-				newText.enabledTruncateToFit = labelTextField.enabledTruncateToFit;
-				newText.enabledVerticalCenter = labelTextField.enabledVerticalCenter;
+				var newText:Text = new Text(content,false,separateTextField,textPadding);
+				newText.enabledAdjustContextSize = enabledAdjustContextSize;
+				newText.enabledTruncateToFit = enabledTruncateToFit;
+				newText.enabledVerticalCenter = enabledVerticalCenter;
 				newText.autoSize = autoSize;
 				
 				labelTextField.destory();
@@ -426,6 +429,76 @@ package flashk.controls
 			
 			if (label != null)
 				labelTextField.text = label;
+		}
+		/**
+		 * 文本自适应边距 
+		 * @return 
+		 * 
+		 */
+		public function get textPadding():Padding
+		{
+			return labelTextField ? labelTextField.textPadding : null;
+		}
+		
+		public function set textPadding(value:Padding):void
+		{
+			if (labelTextField)
+				labelTextField.textPadding = value;
+		}
+		/**
+		 * 是否自动根据文本调整Skin体积。当separateTextField为false时，此属性无效。
+		 * 要正确适应文本，首先必须在创建时将separateTextField参数设为true，其次可以根据textPadding来决定边距
+		 */
+		public function get enabledAdjustContextSize():Boolean
+		{
+			return labelTextField ? labelTextField.enabledAdjustContextSize : false;
+		}
+		
+		public function set enabledAdjustContextSize(value:Boolean):void
+		{
+			if (labelTextField)
+				labelTextField.enabledAdjustContextSize = value;
+		}
+		/**
+		 * 是否将文本从Skin中剥离。剥离后Skin缩放才不会影响到文本的正常显示
+		 */
+		public function get separateTextField():Boolean
+		{
+			return labelTextField ? labelTextField.separateTextField : false;
+		}
+		
+		public function set separateTextField(v:Boolean):void
+		{
+			if (labelTextField)
+				labelTextField.separateTextField = v;
+		}
+		/**
+		 * 自动截取文本 
+		 * @return 
+		 * 
+		 */
+		public function get enabledTruncateToFit():Boolean
+		{
+			return labelTextField ? labelTextField.enabledTruncateToFit : false;
+		}
+		
+		public function set enabledTruncateToFit(v:Boolean):void
+		{
+			if (labelTextField)
+				labelTextField.enabledTruncateToFit = v;
+		}
+		/**
+		 * 文本是否垂直居中
+		 */
+		public function get enabledVerticalCenter():Boolean
+		{
+			return labelTextField ? labelTextField.enabledVerticalCenter : false;
+		}
+		
+		public function set enabledVerticalCenter(v:Boolean):void
+		{
+			if (labelTextField)
+				labelTextField.enabledVerticalCenter = v;
 		}
 		/**
 		 * Label自动大小
@@ -465,7 +538,7 @@ package flashk.controls
 		public override function set data(v:*) : void
 		{
 			super.data = v;			
-			if (label != null)
+			if (v!=null&&label != null)
 			{
 				if (labelTextField)
 					labelTextField.text = label;

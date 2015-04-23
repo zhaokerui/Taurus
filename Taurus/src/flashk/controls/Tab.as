@@ -106,8 +106,6 @@ package flashk.controls
 			var mc:*;
 			for(var i:int=0;i<len;i++)
 			{
-				_list.pop().destory();
-				
 				mc = skin.getChildByName(fields.viewField+(i+1));
 				_list.push(new _tabList[i](mc));
 			}
@@ -254,7 +252,16 @@ package flashk.controls
 				repeater.y = repeaterRect.y;
 			}
 		}
-		
+		public function addChildRepeater(skin:*,index:uint):void
+		{
+			if(repeater==null)
+			{
+				addRepeater();
+			}
+			var btn:Button=new Button(skin);
+			btn.data=index;
+			repeater.addChild(btn);
+		}
 		/**
 		 * 删除标签容器
 		 * 
@@ -271,7 +278,7 @@ package flashk.controls
 		private function onChange(evt:Event):void
 		{
 			var index:int = repeater.selectedData;
-			selectedIndex = index;
+			selectedIndex = index-1;
 			if(selectedHandler!=null)
 				selectedHandler(index,getView(index-1));
 		}

@@ -248,6 +248,7 @@ package flashk.controls
 			
 			this.enabledAutoSize = false;
 			this.source = source;
+			this.acceptContentPosition=false;
 		}
 		
 		private function loadCompleteHandler(event:Event):void

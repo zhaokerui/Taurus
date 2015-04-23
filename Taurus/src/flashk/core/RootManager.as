@@ -21,7 +21,7 @@ package flashk.core
 	 * 
 	 * 也不一定非要和flashVars关系上，你也可以把这里当成一个全局的数据容器
 	 * 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */	
 	public final class RootManager

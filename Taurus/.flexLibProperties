@@ -87,8 +87,6 @@
     <classEntry path="flashk.layout.LinearLayout"/>
     <classEntry path="flashk.layout.EllipseLayout"/>
     <classEntry path="flashk.events.ItemClickEvent"/>
-    <classEntry path="flashk.events.PropertyChangeEvent"/>
-    <classEntry path="flashk.events.PropertyChangeEventKind"/>
     <classEntry path="flashk.controls.Text"/>
     <classEntry path="flashk.layout.Padding"/>
     <classEntry path="flashk.utils.MatrixUtil"/>

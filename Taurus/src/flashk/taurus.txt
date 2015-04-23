@@ -13,10 +13,3 @@ CheckBox ComboBox RadioButton Silder  Image      Panel   Tab  ScrollPanel       
 									 
 									 
 									 
-									 
-									 
-									 Parse
-									 |
-									 DisplayParse
-	             |                                                           |
- DrawParse Grid9Parse RectParse ShapeParse BitmapParse                  GraphicsRect

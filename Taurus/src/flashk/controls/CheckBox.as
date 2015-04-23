@@ -24,6 +24,7 @@ package flashk.controls
 				skin = defaultSkin;
 			super(skin,replace,autoRefreshLabelField);
 			super.autoSize = UIConst.RIGHT;
+			toggle = true;
 		}
 	}
 }

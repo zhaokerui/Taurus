@@ -5,7 +5,6 @@ package flashk.controls
 	import flash.display.DisplayObjectContainer;
 	import flash.display.InteractiveObject;
 	import flash.events.Event;
-	import flash.events.IEventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
@@ -14,7 +13,6 @@ package flashk.controls
 	import flashk.display.IBase;
 	import flashk.display.UIBase;
 	import flashk.events.ItemClickEvent;
-	import flashk.events.PropertyChangeEvent;
 	import flashk.events.RepeatEvent;
 	import flashk.utils.ClassFactory;
 	
@@ -434,32 +432,6 @@ package flashk.controls
 		{
 			super.data = v;
 			refresh();
-			
-			if (v is IEventDispatcher && !(v as IEventDispatcher).hasEventListener(PropertyChangeEvent.PROPERTY_CHANGE))
-				(v as IEventDispatcher).addEventListener(PropertyChangeEvent.PROPERTY_CHANGE,dataChangeHandler,false,0,true);
-		}
-		
-		/**
-		 * 通过外部修改数据源变化事件
-		 * @param event
-		 * 
-		 */
-		protected function dataChangeHandler(event:PropertyChangeEvent):void
-		{
-			var i:int;
-			var j:int;
-			
-			if (type == UIConst.HORIZONTAL)
-				i = int(event.property);
-			else if (type == UIConst.VERTICAL)
-				j = int(event.property);
-			else
-			{
-				j = int(event.property) / columnCount;
-				i = int(event.property) % columnCount;
-			}
-			
-			refreshIndex(i,j);
 		}
 		
 		/**
@@ -584,9 +556,6 @@ package flashk.controls
 		{
 			if (destoryed)
 				return;
-			
-			if (data && data is IEventDispatcher)
-				(data as IEventDispatcher).removeEventListener(PropertyChangeEvent.PROPERTY_CHANGE,dataChangeHandler);
 			
 			for (var i:int = 0; i < numChildren;i++)
 			{

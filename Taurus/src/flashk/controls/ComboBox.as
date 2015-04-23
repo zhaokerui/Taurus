@@ -5,8 +5,10 @@ package flashk.controls
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	import flashk.core.UIConst;
+	import flashk.utils.ClassFactory;
 	import flashk.utils.Geom;
 	
 	import taurus.skin.ComboBoxSkin;
@@ -23,6 +25,7 @@ package flashk.controls
 		
 		public var fields:Object = {listField:"list",openButtonField:"openButton"};
 		
+		private var _itemRender:*;
 		/**
 		 * 列表实例
 		 */
@@ -44,6 +47,9 @@ package flashk.controls
 		 * 承载List的容器
 		 */
 		public var listContainer:DisplayObjectContainer;
+		
+		public var listRect:Rectangle;
+		public var listSpace:int=3;
 		
 		
 		/**
@@ -83,13 +89,15 @@ package flashk.controls
 				list.height = list.rowHeight * maxLine;
 		}
 		
-		public function ComboBox(skin:*=null, replace:Boolean=true,fields:Object=null, autoRefreshLabelField:Boolean = true)
+		public function ComboBox(skin:*=null, replace:Boolean=true,fields:Object=null, autoRefreshLabelField:Boolean = true,itemRender:* = null)
 		{
 			if (!skin)
 				skin = defaultSkin;
 			
 			if (fields)
 				this.fields = fields;
+			
+			this._itemRender = itemRender;
 			
 			super(skin, replace, autoRefreshLabelField);
 			
@@ -100,14 +108,18 @@ package flashk.controls
 		{
 			super.setContent(skin,replace);
 			
-			var listField:String = fields.listField;
-			var openButtonField:String = fields.openButtonField;
+			openButton = new Button(content[fields.openButtonField],true,true);
 			
-			openButton = new Button(content[openButtonField],true,true);
+			var listSkin:DisplayObject = content[fields.listField] as DisplayObject;
+			if(listSkin)
+				listRect = new Rectangle(listSkin.x,listSkin.y,listSkin.width,listSkin.height);
+			else
+				listRect = new Rectangle(0,0,this.width,this.height);
 			
-			list = new List(content[listField],true,UIConst.VERTICAL);
-			list.width = int(this.width);
-			list.height = int(list.rowHeight * maxLine);
+			list = new List(listSkin,true,UIConst.VERTICAL,_itemRender);
+			list.width = int(listRect.width);
+			var rh:int = int(list.rowHeight * maxLine);
+			list.height = listRect.height>rh?listRect.height:rh;
 			if (list.parent)
 				list.parent.removeChild(list);
 		}
@@ -126,13 +138,24 @@ package flashk.controls
 			var listPos:Point = Geom.localToContent(new Point(),this,listContainer)
 			list.data = listData;
 			list.addEventListener(Event.CHANGE,listChangeHandler);
-			list.x = listPos.x;
-			list.y = listPos.y + ((direction == UIConst.UP) ? -list.height : content.height);
+			if(listRect.width<this.width)
+			{
+				list.x = listPos.x+this.width-listRect.width;
+			}else{
+				list.x = listPos.x+listRect.x;
+			}
+			if(listRect.height>content.height)
+			{
+				list.y = listPos.y + ((direction == UIConst.UP) ? listRect.height-list.height: listRect.height+content.height+listSpace);
+			}else{
+				list.y = listPos.y + ((direction == UIConst.UP) ? -list.listHeight : content.height);
+			}
 			
 			this.listContainer.addChild(list);
 			
-			if (listData.length > maxLine || listData.length == 0)//listData有时候会莫名其妙length = 0，暂时这样处理
+			if (list.vScrollBar==null&&(listData.length > maxLine || listData.length == 0))//listData有时候会莫名其妙length = 0，暂时这样处理
 				list.addVScrollBar();
+			
 			
 		}
 		/** @inheritDoc*/
@@ -170,7 +193,6 @@ package flashk.controls
 		{
 			if (list.parent == listContainer)
 			{
-				list.removeVScrollBar();
 				this.listContainer.removeChild(list);
 			}
 		}

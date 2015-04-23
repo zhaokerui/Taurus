@@ -2,7 +2,9 @@ package flashk.core
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.BlendMode;
 	import flash.display.DisplayObject;
+	import flash.display.Shape;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -11,8 +13,6 @@ package flashk.core
 	
 	import flashk.events.DragEvent;
 	import flashk.events.TickEvent;
-	import flashk.parse.display.AlphaShapeParse;
-	import flashk.parse.display.DrawParse;
 	import flashk.utils.Geom;
 	import flashk.utils.Handler;
 
@@ -28,7 +28,7 @@ package flashk.core
 	 * 
 	 * 设定type可以选择拖动临时图标代替拖动本体
 	 * 
-	 * @author flashyiyi
+	 * @author kerry
 	 * 
 	 */	
 	
@@ -178,13 +178,13 @@ package flashk.core
 			
 			if (type == CLONE || type == ALPHA_CLONE)
 			{
-				image = DrawParse.createBitmap(obj);
+				image = createBitmap(obj);
 				dragMousePos.x -= image.x;
 				dragMousePos.y -= image.y;
 				obj.stage.addChild(image);
 				
 				if (type == ALPHA_CLONE)
-					new AlphaShapeParse(image).parse(image.bitmapData);
+					parseBitmapData(image.bitmapData);
 			}
 		}
 		
@@ -286,6 +286,38 @@ package flashk.core
 			var e:DragEvent = new DragEvent(DragEvent.DRAG_OUT,true,false);
 			e.dragObj = obj;
 			event.target.dispatchEvent(e);
+		}
+		public static function createBitmap(source:*):Bitmap
+		{
+			var displayObj:DisplayObject = source as DisplayObject;
+			if (!displayObj)
+				return null;
+			
+			var bounds:Rectangle = displayObj.getBounds(displayObj);
+			var width:int = Math.ceil(bounds.width);
+			var height:int = Math.ceil(bounds.height);
+			var bitmap:Bitmap;
+			try
+			{
+				bitmap = new Bitmap(new BitmapData(width,height,true,0x00FFFFFF));
+			}
+			catch (e:Error)
+			{
+				bitmap = new Bitmap();
+			}
+			
+			if (source is DisplayObject)
+			{
+				bitmap.x = (source as DisplayObject).x + bounds.x;
+				bitmap.y = (source as DisplayObject).y + bounds.y;
+			}
+			return bitmap;
+		}
+		public static function parseBitmapData(target:BitmapData):void
+		{
+			var s:Shape = new Shape();
+			s.blendMode = BlendMode.ALPHA;
+			target.draw(s,null,null,BlendMode.ALPHA);
 		}
 	}
 }

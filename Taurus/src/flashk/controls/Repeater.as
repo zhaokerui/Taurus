@@ -10,6 +10,7 @@ package flashk.controls
 	import flashk.display.UIBase;
 	import flashk.events.ItemClickEvent;
 	import flashk.layout.LinearLayout;
+	import flashk.layout.Padding;
 	import flashk.utils.ClassFactory;
 	
 	[Event(name="change",type="flash.events.CHANGE")]
@@ -33,9 +34,16 @@ package flashk.controls
 		 * 是否点击选中
 		 */
 		public var toggleOnClick:Boolean;
+		/**
+		 * 是否显示文字 
+		 */		
+		public var autoLabelField:Boolean=false;
+		public var separateTextField:Boolean=false;
+		public var textPadding:Padding=null;
 		
 		private var _selectedData:*;
 		private var _labelField:String;
+		public var selectedHandler:Function;
 		
 		public function Repeater(skin:*=null, replace:Boolean=true, ref:*=null,type:String = "horizontal")
 		{
@@ -121,6 +129,13 @@ package flashk.controls
 					ref.params[0] = renderSkin;
 				else
 					ref.params = [renderSkin];
+				if(autoLabelField)
+				{
+					ref.params[1] = true;
+					ref.params[2] = true;
+					ref.params[3] = separateTextField;
+					ref.params[4] = textPadding;
+				}
 			}
 			
 			var i:int;
@@ -245,6 +260,28 @@ package flashk.controls
 					e.data = (o as UIBase).data;
 					e.relatedObject = o as InteractiveObject;
 					dispatchEvent(e);
+				}else{
+					if(data&&data.length==contentPane.numChildren)
+					{
+						var d:*;
+						for (var i:int = 0;i < contentPane.numChildren;i++)
+						{
+							if (o.name==contentPane.getChildAt(i).name)
+							{
+								d = data[i];
+								break;
+							}
+						}
+						if(selectedHandler==null)
+						{
+							e = new ItemClickEvent(ItemClickEvent.ITEM_CLICK);
+							e.data = d;
+							e.relatedObject = o as InteractiveObject;
+							dispatchEvent(e);
+						}else{
+							selectedHandler(d);
+						}
+					}
 				}
 			}
 		}

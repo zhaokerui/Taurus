@@ -1,12 +1,16 @@
 package flashk.controls
 {
+	
 	import flashk.core.DragManager;
 	import flashk.core.PopupManager;
 	import flashk.core.UIBuilder;
 	import flashk.core.UIConst;
 	import flashk.display.UIBase;
+	import flashk.events.ActionEvent;
 	import flashk.events.ItemClickEvent;
 	import flashk.layout.LayoutUtil;
+	import flashk.layout.LinearLayout;
+	import flashk.layout.Padding;
 	
 	import taurus.skin.AlertSkin;
 	
@@ -24,6 +28,7 @@ package flashk.controls
 		 * 默认按钮 
 		 */
 		public static var defaultButtons:Array = ["确认"];
+		public static var confirm:String = "确认";
 		
 		/**
 		 * 文字
@@ -55,7 +60,7 @@ package flashk.controls
 			titleTextField.text = v;
 		}
 		
-		public var closeHandler:Function;
+		public var buttonHandler:Function;
 		
 		/**
 		 * 显示 
@@ -68,7 +73,7 @@ package flashk.controls
 		 * @return 
 		 * 
 		 */
-		public static function show(text:String,title:String = null,buttons:Array = null,closeHandler:Function = null,inQueue:Boolean = true):Alert
+		public static function show(text:String,title:String = null,buttons:Array = null,buttonHandler:Function = null,inQueue:Boolean = true):Alert
 		{
 			if (!buttons)
 				buttons = defaultButtons;
@@ -78,7 +83,7 @@ package flashk.controls
 			alert.text = text;
 			alert.data = buttons;
 			
-			alert.closeHandler = closeHandler;
+			alert.buttonHandler = buttonHandler;
 			PopupManager.instance.showPopup(alert,null,true,UIConst.POINT);
 			
 			return alert;
@@ -106,6 +111,7 @@ package flashk.controls
 		public var titleTextField:Text;
 		public var textTextField:Text;
 		public var buttonBar:ButtonBar;
+		public var closeButton:Button;
 		public var dragShape:UIBase;
 		
 		public function Alert(skin:*=null, replace:Boolean=true, paused:Boolean=false, fields:Object=null)
@@ -118,8 +124,8 @@ package flashk.controls
 		
 		private function itemClickHandler(event:ItemClickEvent):void
 		{
-			if (this.closeHandler!=null)
-				this.closeHandler(event);
+			if (this.buttonHandler!=null)
+				this.buttonHandler(event.data);
 			destory();
 		}
 		
@@ -129,6 +135,7 @@ package flashk.controls
 			super.data = v;
 			if (buttonBar)
 			{
+				(this.buttonBar.layout as LinearLayout).horizontalGap = 5;
 				this.buttonBar.data = v;
 				this.buttonBar.layout.vaildLayout();
 				this.buttonBar.autoSize();
@@ -142,17 +149,34 @@ package flashk.controls
 			super.setContent(skin,replace);
 			
 			UIBuilder.buildAll(this);
-			
-			buttonBar.addEventListener(ItemClickEvent.ITEM_CLICK,itemClickHandler);
+			if(buttonBar)
+			{
+				buttonBar.autoLabelField = true;
+				buttonBar.textPadding = new Padding(5,0,5,0);
+				buttonBar.addEventListener(ItemClickEvent.ITEM_CLICK,itemClickHandler);
+			}
+			if(closeButton!=null)
+			{
+				closeButton.action="close";
+				closeButton.addEventListener(ActionEvent.ACTION,closeButtonClickHandler);
+			}
 			DragManager.register(dragShape,this);
+		}
+		private function closeButtonClickHandler(event:ActionEvent):void
+		{
+			if (this.buttonHandler!=null)
+				this.buttonHandler(null);
+			destory();
 		}
 		/** @inheritDoc*/
 		public override function destory() : void
 		{
 			if (destoryed)
 				return;
-			
-			buttonBar.removeEventListener(ItemClickEvent.ITEM_CLICK,itemClickHandler);
+			if(buttonBar)
+				buttonBar.removeEventListener(ItemClickEvent.ITEM_CLICK,itemClickHandler);
+			if(closeButton)
+				closeButton.removeEventListener(ActionEvent.ACTION,closeButtonClickHandler);
 			DragManager.unregister(dragShape);
 			
 			UIBuilder.destory(this);
@@ -160,6 +184,7 @@ package flashk.controls
 			super.destory();
 			
 			PopupManager.instance.removePopup(this);
+			this.buttonHandler=null;
 		}
 	}
 }

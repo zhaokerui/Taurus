@@ -43,6 +43,8 @@ package flashk.core
 		
 		public static const OFF : String = "off";
 		
+		public static const EMPTY : String = "";
+		
 		/**
 		 * 等比例缩放，但不会超过容器的范围
 		 */
