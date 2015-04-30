@@ -315,5 +315,31 @@ package flashk.controls
 		{
 			listContent.rowHeight = v;
 		}
+		/**
+		 * 移除全部 
+		 * 
+		 */		
+		public function removeAll():void
+		{
+			listContent.removeAll();
+		}
+		/**
+		 * 根据数据移除 
+		 * @param index
+		 * 
+		 */	
+		public function removeData(index:uint):void
+		{
+			listContent.removeData(index);
+		}
+		/**
+		 * 根据对象移除 
+		 * @param item
+		 * 
+		 */		
+		public function removeRender(item:DisplayObject):void
+		{
+			listContent.removeRender(item);
+		}
 	}
 }
