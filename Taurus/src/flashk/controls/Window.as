@@ -3,6 +3,7 @@ package flashk.controls
 	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -103,10 +104,19 @@ package flashk.controls
 				autoWindowSize = false;
 				closeButton.action="close";
 				closeButton.addEventListener(ActionEvent.ACTION,closeButtonClickHandler);
+				if(dragBase==null)
+				{
+					var dis:Shape = new Shape();
+					dis.graphics.beginFill(0,0);
+					dis.graphics.drawRect(0 ,0,closeButton.x,closeButton.y+closeButton.height);
+					dragBase = new UIBase(dis);
+					this.addChildAt(dragBase,this.getChildIndex(closeButton));
+				}
 			}
 			if(dragBase)
 				DragManager.register(dragBase,this,null,null,dragBaseMouseHandler);
 		}
+		
 		public override function setBackgroundSkin(skin:*):void
 		{
 			if(autoWindowSize)
@@ -194,10 +204,10 @@ package flashk.controls
 				{
 					h = content.height;
 				}
-				dragBase.width = w+offset*2;
-				background.width = w+offset*2;
-				background.height = h+offset;
-				closeButton.x = w+offset*2-closeButtonOffset;
+				dragBase.width = int(w+offset*2);
+				background.width = int(w+offset*2);
+				background.height = int(h+offset);
+				closeButton.x = int(w+offset*2-closeButtonOffset);
 			}
 		}
 		protected override function updateSize():void
@@ -211,7 +221,7 @@ package flashk.controls
 			if(this.closeHandler==null)
 				dispatchEvent(new Event(Event.CLOSE));
 			else
-				this.closeHandler(event);
+				this.closeHandler();
 		}
 		public function close():void
 		{
@@ -246,8 +256,8 @@ package flashk.controls
 			{
 				stageY = stage.stageHeight-20;
 			}
-			this.x += stageX-pos.x;
-			this.y += stageY-pos.y;
+			this.x += int(stageX-pos.x);
+			this.y += int(stageY-pos.y);
 		}
 		/**
 		 * 将窗口移动到显示列表的最顶层
@@ -268,8 +278,8 @@ package flashk.controls
 		{
 			if(enabledCenter&&RootManager.initialized)
 			{
-				this.x = (RootManager.stage.stageWidth - this.width)/2;
-				this.y = (RootManager.stage.stageHeight - this.height)/2;
+				this.x = int((RootManager.stage.stageWidth - this.width)/2);
+				this.y = int((RootManager.stage.stageHeight - this.height)*0.4);
 			}
 		}
 		public override function destory() : void
