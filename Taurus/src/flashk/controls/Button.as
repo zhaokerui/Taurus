@@ -4,6 +4,7 @@ package flashk.controls
 	import flash.display.SimpleButton;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TextEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import flash.utils.clearTimeout;
@@ -533,6 +534,14 @@ package flashk.controls
 			}
 			else
 				data = v;
+		}
+		private function changeWhenInputHandler(event:TextEvent):void
+		{
+			if(labelTextField.editable)
+			{
+				super.data = new Object();
+				label = event.text;
+			}
 		}
 		/** @inheritDoc*/
 		public override function set data(v:*) : void
