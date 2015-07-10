@@ -30,6 +30,7 @@ package flashk.controls
 		 * 列表实例
 		 */
 		public var list:List;
+		public var selectedHandler:Function;
 		
 		/**
 		 * 展开按钮
@@ -184,6 +185,8 @@ package flashk.controls
 		
 		private function listChangeHandler(event:Event):void
 		{
+			if(selectedHandler!=null)
+				selectedHandler(list.selectedData);
 			this.data = list.selectedData;
 			if(hideListOnClick)
 				hideList();
