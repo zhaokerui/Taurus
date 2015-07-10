@@ -314,9 +314,5 @@ package flashk.controls
 				LayoutUtil.silder(content,this,horizontalAlign,verticalAlign);
 			
 		}
-		public function clear():void
-		{
-			setContent(null);
-		}
 	}
 }
