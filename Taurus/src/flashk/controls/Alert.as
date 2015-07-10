@@ -152,7 +152,7 @@ package flashk.controls
 			if(buttonBar)
 			{
 				buttonBar.autoLabelField = true;
-				buttonBar.textPadding = new Padding(10,3,5,0);
+				buttonBar.textPadding = new Padding(5,0,5,0);
 				buttonBar.addEventListener(ItemClickEvent.ITEM_CLICK,itemClickHandler);
 			}
 			if(closeButton!=null)

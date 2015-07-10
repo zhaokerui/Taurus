@@ -231,8 +231,8 @@ package flashk.core
 			else if (centerMode == UIConst.POINT)
 			{
 				var center:Point = popupLayer.globalToLocal(Geom.center(popupLayer.stage));
-				obj.x = int(center.x-obj.width/2);
-				obj.y = int(center.y-obj.height/2);
+				obj.x = center.x;
+				obj.y = center.y;
 			}
 			
 			if (offest)

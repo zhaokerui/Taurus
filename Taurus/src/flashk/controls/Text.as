@@ -157,10 +157,6 @@ package flashk.controls
 		 * 在输入文字的时候也发布Change事件
 		 */
 		public var changeWhenInput:Boolean = false;
-		/**
-		 * 在输入文字的时候也发布handler事件
-		 */		
-		public var changeWhenInputHandler:Function;
 		
 		/**
 		 * 文字是否竖排
@@ -528,8 +524,8 @@ package flashk.controls
 				else
 				{
 					var rect:Rectangle = getBounds(this);
-					content.width = int(textField.width - rect.x);
-					content.height = int(textField.height - rect.y);
+					content.width = textField.width - rect.x;
+					content.height = textField.height - rect.y;
 				}
 			}
 		}
@@ -557,7 +553,7 @@ package flashk.controls
 			p.removeChild(textField);
 			var center:Point = Geom.center(content,p);
 			p.addChild(textField);
-			textField.y = int(center.y - textField.height / 2);
+			textField.y = center.y - textField.height / 2;
 		}
 		
 		/** @inheritDoc*/
@@ -686,8 +682,7 @@ package flashk.controls
 			
 			if (changeWhenInput)
 				this.data = textField.text;
-			if(changeWhenInputHandler!=null)
-				changeWhenInputHandler(event);
+			//				dispatchEvent(new Event(Event.CHANGE));
 		}
 		
 		/**

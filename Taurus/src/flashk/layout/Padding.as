@@ -39,16 +39,16 @@ package flashk.layout
 			parent = Geom.getRect(parent,parent);
 			
 			if (!isNaN(left))
-				rect.x = int(parent.x + left);
+				rect.x = parent.x + left;
 			
 			if (!isNaN(top))
-				rect.y = int(parent.y + top);
+				rect.y = parent.y + top;
 			
 			if (!isNaN(right))
-				rect.width = int(parent.right - right - rect.x);
+				rect.width = parent.right - right - rect.x;
 			
 			if (!isNaN(bottom))
-				rect.height = int(parent.bottom - bottom - rect.y);		
+				rect.height = parent.bottom - bottom - rect.y;		
 		}
 		
 		/**
@@ -61,24 +61,24 @@ package flashk.layout
 		public function adjectRectBetween(rect:*,rect2:*):void
 		{
 			if (!isNaN(left))
-				rect.x = int(rect2.x + left);
+				rect.x = rect2.x + left;
 			
 			if (!isNaN(top))
-				rect.y = int(rect2.y + top);
+				rect.y = rect2.y + top;
 			
 			if (!isNaN(right))
-				rect.width = int(rect2.x + rect2.width - right - rect.x);
+				rect.width = rect2.x + rect2.width - right - rect.x;
 			
 			if (!isNaN(bottom))
-				rect.height = int(rect2.y + rect2.height - bottom - rect.y);
+				rect.height = rect2.y + rect2.height - bottom - rect.y;
 			
 			//处理注册点问题
 			var dis:DisplayObject = rect as DisplayObject
 			if (dis)
 			{
 				var pRect:Rectangle = Geom.getRect(dis);
-				dis.x -= int(pRect.x - dis.x);
-				dis.y -= int(pRect.y - dis.y);
+				dis.x -= pRect.x - dis.x;
+				dis.y -= pRect.y - dis.y;
 			}
 		}
 		
