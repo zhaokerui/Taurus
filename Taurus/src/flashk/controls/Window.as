@@ -215,13 +215,13 @@ package flashk.controls
 			super.updateSize();
 			refresh();
 		}
-		private function closeButtonClickHandler(event:ActionEvent):void
+		protected function closeButtonClickHandler(event:ActionEvent):void
 		{
-			close();
 			if(this.closeHandler==null)
 				dispatchEvent(new Event(Event.CLOSE));
 			else
 				this.closeHandler();
+			close();
 		}
 		public function close():void
 		{
